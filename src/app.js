@@ -5,18 +5,19 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
+const authRoute = require("./routes/auth-route");
+
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error");
 
 const app = express();
-
-app.use(express.json());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
 app.use(helmet());
+app.use(cors());
 app.use(
   rateLimit({
     windowMs: 1000 * 60 * 15,
@@ -24,8 +25,9 @@ app.use(
     message: { message: "too many requests" },
   })
 );
+app.use(express.json());
 
-app.use(cors());
+app.use("/auth", authRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
