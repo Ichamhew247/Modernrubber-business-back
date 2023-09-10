@@ -16,5 +16,15 @@ const registerSchema = Joi.object({
     .strip(),
 });
 
+const loginSchema = Joi.object({
+  userName: Joi.string().required(),
+  password: Joi.string().required(),
+});
+const contactSchema = Joi.object({
+  email: Joi.string().required(),
+});
+
 // exports.validateRegister = (input) => registerSchema.validate(input);
 exports.validateRegister = validate(registerSchema);
+exports.validateLogin = validate(loginSchema);
+exports.validateContact = validate(contactSchema);

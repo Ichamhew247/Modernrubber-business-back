@@ -7,4 +7,19 @@ exports.checkUserNameExist = async (userName) => {
 
 exports.createUser = (user) => userRepository.createUser(user);
 
+exports.getUsername = async (userName) => {
+  const user = await userRepository.getUsername(userName);
+  return user;
+};
+
+exports.checkContactExist = async (email) => {
+  const existContact = await userRepository.getContact(email);
+  return !!existContact;
+};
+
+exports.saveContact = async (email) => {
+  const contact = await userRepository.saveContact(email);
+  return contact;
+};
+
 //controller repository service

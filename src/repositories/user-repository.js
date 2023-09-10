@@ -1,4 +1,5 @@
 const { Users } = require("../models");
+const { Contact } = require("../models");
 
 exports.getUsername = (userName) =>
   Users.findOne({
@@ -7,4 +8,12 @@ exports.getUsername = (userName) =>
     },
   });
 
+exports.saveContact = (email) => {
+  return Contact.create({
+    email: email,
+  });
+};
+
 exports.createUser = (user) => Users.create(user);
+exports.saveContact = (email) => Contact.create({ email });
+// exports.saveContact = (email) => Contact.create({ email: email });
