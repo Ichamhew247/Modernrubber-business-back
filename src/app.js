@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
 const authRoute = require("./routes/auth-route");
+const todoRoute = require("./routes/todo-route");
 
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error");
@@ -17,7 +18,6 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(helmet());
-app.use(cors());
 app.use(
   rateLimit({
     windowMs: 1000 * 60 * 15,
@@ -26,8 +26,10 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cors());
 
 app.use("/auth", authRoute);
+app.use("/todos", todoRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
