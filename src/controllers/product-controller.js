@@ -9,6 +9,8 @@ let products = [
     nameProductEtc: "nameEtc",
     price: "123",
     type: "ยาง",
+    description: "www",
+    image: "image",
   },
   {
     id: 2,
@@ -16,6 +18,8 @@ let products = [
     nameProductEtc: "namelongEtc",
     price: "222",
     type: "plastic",
+    description: "description",
+    image: "image",
   },
   {
     id: 3,
@@ -23,13 +27,16 @@ let products = [
     nameProductEtc: "wweee",
     price: "9090909",
     type: "Non",
+    description: "description",
+    image: "image",
   },
 ];
 exports.getProduce = async (req, res, next) => {
   res.send(products);
 };
 exports.createProduce = async (req, res, next) => {
-  const { nameProduct, nameProductEtc, price, type } = req.body;
+  const { nameProduct, nameProductEtc, price, type, description, image } =
+    req.body;
 
   const product = {
     // taxValue: req.body.taxValue
@@ -38,6 +45,8 @@ exports.createProduce = async (req, res, next) => {
     nameProductEtc: nameProductEtc,
     price: price,
     type: type,
+    description: description,
+    image: image,
   };
 
   products.push(product);
@@ -56,14 +65,17 @@ exports.deleteProduct = async (req, res, next) => {
 
 exports.editProduct = async (req, res, next) => {
   const id = req.params.id;
-  const { nameProduct, nameProductEtc, price, type } = req.body;
+  const { nameProduct, nameProductEtc, price, type, description, image } =
+    req.body;
 
   const productToEdit = products.find((product) => product.id == id);
 
   productToEdit.nameProduct = nameProduct;
   productToEdit.nameProductEtc = nameProductEtc;
-  productToEdit.price = price;
+  productToEdit.description = description;
   productToEdit.type = type;
+  productToEdit.price = price;
+  productToEdit.image = image;
   res.send(productToEdit);
   // res.json({ message: "Todo updated successfully", product: productToEdit });
 };
