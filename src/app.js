@@ -4,6 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const cloudinary = require("./cloudinary/cloudinary");
 
 const authRoute = require("./routes/auth-route");
 const todoRoute = require("./routes/todo-route");
@@ -28,15 +29,31 @@ app.use(
 );
 app.use(express.json());
 app.use(cors());
-const cloudinary = require("./config/cloundinary");
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 app.use("/auth", authRoute);
 app.use("/todos", todoRoute);
 app.use("/products", productRoute);
+app.post("/upload", async (req, res) => {
+  try {
+    const { image } = req.body;
+
+    const uploadedImage = await cloudinary.uploader.upload(image, {
+      upload_preset: "unsigned_upload",
+      public_id: "imageProduct",
+      allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
+    });
+
+    res.status(200).json(uploadedImage);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "An error occurred" });
+  }
+});
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
-
 const port = process.env.PORT || 8000;
 app.listen(port || 8000, () => {
   console.log("server running on port " + port);
