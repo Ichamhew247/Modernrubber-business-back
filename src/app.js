@@ -28,6 +28,7 @@ app.use(
 );
 app.use(express.json());
 app.use(cors());
+const cloudinary = require("./config/cloundinary");
 
 app.use("/auth", authRoute);
 app.use("/todos", todoRoute);

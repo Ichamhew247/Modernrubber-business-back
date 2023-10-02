@@ -1,81 +1,104 @@
+// const { v4: uuidv4 } = require("uuid");
+const { Products } = require("../models");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 
-const { v4: uuidv4 } = require("uuid");
-let products = [
-  {
-    id: 1,
-    nameProduct: "namePro",
-    nameProductEtc: "nameEtc",
-    price: "123",
-    type: "ยาง",
-    description: "www",
-    image: "image",
-  },
-  {
-    id: 2,
-    nameProduct: "Longlong",
-    nameProductEtc: "namelongEtc",
-    price: "222",
-    type: "plastic",
-    description: "description",
-    image: "image",
-  },
-  {
-    id: 3,
-    nameProduct: "tyty",
-    nameProductEtc: "wweee",
-    price: "9090909",
-    type: "Non",
-    description: "description",
-    image: "image",
-  },
-];
-exports.getProduce = async (req, res, next) => {
-  res.send(products);
+exports.getProduct = async (req, res, next) => {
+  try {
+    const products = await Products.findAll();
+    res.json(products);
+  } catch (error) {
+    next(error);
+  }
 };
-exports.createProduce = async (req, res, next) => {
-  const { nameProduct, nameProductEtc, price, type, description, image } =
-    req.body;
 
-  const product = {
-    // taxValue: req.body.taxValue
-    id: uuidv4(),
-    nameProduct: nameProduct,
-    nameProductEtc: nameProductEtc,
-    price: price,
-    type: type,
-    description: description,
-    image: image,
-  };
+exports.searchProduct = (req, res, next) => {
+  const searchKeyword = req.query.keyword;
+  Products.findAll({
+    where: {
+      [Op.or]: [
+        {
+          nameProduct: {
+            [Op.like]: `%${searchKeyword}%`,
+          },
+        },
+        {
+          nameProductEtc: {
+            [Op.like]: `%${searchKeyword}%`,
+          },
+        },
+        {
+          description: {
+            [Op.like]: `%${searchKeyword}%`,
+          },
+        },
+        {
+          type: {
+            [Op.like]: `%${searchKeyword}%`,
+          },
+        },
+        {
+          price: {
+            [Op.like]: `%${searchKeyword}%`,
+          },
+        },
+        {
+          image: {
+            [Op.like]: `%${searchKeyword}%`,
+          },
+        },
+      ],
+    },
+  })
+    .then((results) => {
+      res.json(results);
+    })
+    .catch(next);
+};
 
-  products.push(product);
-  return res.send(product);
+exports.createProduct = async (req, res, next) => {
+  try {
+    const { nameProduct, nameProductEtc, price, type, description, image } =
+      req.body;
+
+    const result = await Products.create({
+      nameProduct: nameProduct,
+      nameProductEtc: nameProductEtc,
+      description: description,
+      type: type,
+      price: price,
+      image: image,
+    });
+    res.status(201).json({ message: "อัพโหลดสินค้าสำเร็จ", result });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.deleteProduct = async (req, res, next) => {
-  const id = req.params.id;
-  const index = products.findIndex((product) => product.id == id);
-  if (index > -1) {
-    products.splice(index, 1);
-  }
+  try {
+    let { id } = req.params;
 
-  res.send(products);
+    const result = await Products.destroy({
+      where: { id: id },
+    });
+
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.editProduct = async (req, res, next) => {
-  const id = req.params.id;
-  const { nameProduct, nameProductEtc, price, type, description, image } =
-    req.body;
+  try {
+    const { id } = req.params;
 
-  const productToEdit = products.find((product) => product.id == id);
-
-  productToEdit.nameProduct = nameProduct;
-  productToEdit.nameProductEtc = nameProductEtc;
-  productToEdit.description = description;
-  productToEdit.type = type;
-  productToEdit.price = price;
-  productToEdit.image = image;
-  res.send(productToEdit);
-  // res.json({ message: "Todo updated successfully", product: productToEdit });
+    const result = await Products.update(
+      { ...req.body },
+      { where: { id: id } }
+    );
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
 };

@@ -4,24 +4,23 @@ module.exports = (sequelize, DataTypes) => {
     {
       nameProduct: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
       },
       nameProductEtc: {
-        type: DataTypes.TEXT,
-        allowNull: true,
+        type: DataTypes.STRING,
+      },
+      description: {
+        type: DataTypes.STRING,
+      },
+      type: {
+        type: DataTypes.STRING,
       },
       price: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
-
-      type: {
+      image: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
+      productImage: DataTypes.STRING,
     },
     {
       underscored: true,

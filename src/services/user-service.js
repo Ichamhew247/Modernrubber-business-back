@@ -21,5 +21,3 @@ exports.saveContact = async (email) => {
   const contact = await userRepository.saveContact(email);
   return contact;
 };
-
-//controller repository service
