@@ -9,6 +9,6 @@ router.post("/createProduct", productController.createProduct);
 router.delete("/deleteProduct/:id", productController.deleteProduct);
 router.patch("/editProduct/:id", productController.editProduct);
 router.post("/searchProduct", productController.searchProduct);
-router.post("/uploadProduct", uploadController.imageProduct);
+router.post("/imageProduct", uploadController.uploadProductImage);
 
 module.exports = router;

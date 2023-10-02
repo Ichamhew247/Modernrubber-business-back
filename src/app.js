@@ -35,22 +35,24 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use("/auth", authRoute);
 app.use("/todos", todoRoute);
 app.use("/products", productRoute);
-app.post("/upload", async (req, res) => {
-  try {
-    const { image } = req.body;
+app.use("/upload", productRoute);
 
-    const uploadedImage = await cloudinary.uploader.upload(image, {
-      upload_preset: "unsigned_upload",
-      public_id: "imageProduct",
-      allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
-    });
+// app.post("/upload", async (req, res) => {
+//   try {
+//     const { image } = req.body;
 
-    res.status(200).json(uploadedImage);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "An error occurred" });
-  }
-});
+//     const uploadedImage = await cloudinary.uploader.upload(image, {
+//       upload_preset: "unsigned_upload",
+//       public_id: "imageProduct",
+//       allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
+//     });
+
+//     res.status(200).json(uploadedImage);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "An error occurred" });
+//   }
+// });
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
