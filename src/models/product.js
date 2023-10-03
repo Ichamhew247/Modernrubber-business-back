@@ -17,10 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       price: {
         type: DataTypes.STRING,
       },
-      image: {
+      productImage: {
         type: DataTypes.STRING,
       },
-      productImage: DataTypes.STRING,
     },
     {
       underscored: true,
