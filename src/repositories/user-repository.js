@@ -16,4 +16,3 @@ exports.saveContact = (email) => {
 
 exports.createUser = (user) => Users.create(user);
 exports.saveContact = (email) => Contact.create({ email });
-// exports.saveContact = (email) => Contact.create({ email: email });

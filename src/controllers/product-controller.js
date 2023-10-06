@@ -1,10 +1,6 @@
-// const { v4: uuidv4 } = require("uuid");
-// const multer = require("multer");
 const { Products } = require("../models");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
-
-exports.createProductImage = async (req, res, next) => {};
 
 exports.getProduct = async (req, res, next) => {
   try {
@@ -56,14 +52,8 @@ exports.searchProduct = (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
   try {
-    const {
-      nameProduct,
-      nameProductEtc,
-      price,
-      type,
-      description,
-      uploadedImg,
-    } = req.body;
+    const { nameProduct, nameProductEtc, price, type, description, image } =
+      req.body;
 
     const result = await Products.create({
       nameProduct: nameProduct,
@@ -71,7 +61,6 @@ exports.createProduct = async (req, res, next) => {
       description: description,
       type: type,
       price: price,
-      productImage: uploadedImg,
     });
     res.status(201).json({ message: "อัพโหลดสินค้าสำเร็จ", result });
   } catch (error) {

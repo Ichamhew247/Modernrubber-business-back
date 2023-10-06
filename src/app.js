@@ -3,16 +3,12 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const multer = require("multer");
-// const mysql = require("mysql");
 const path = require("node:path");
-const { Products } = require("../src/models");
+const { Profile } = require("../src/models");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
-const cloudinary = require("./cloudinary/cloudinary");
-
 const authRoute = require("./routes/auth-route");
-const todoRoute = require("./routes/todo-route");
 const productRoute = require("./routes/product-route");
 
 const notFoundMiddleware = require("./middlewares/not-found");
@@ -54,13 +50,15 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 app.use("/auth", authRoute);
-app.use("/todos", todoRoute);
 app.use("/products", productRoute);
-///////////////
+
+//Start Upload Image
 app.post("/upload", upload.single("image"), (req, res) => {
   const image = req.file.filename;
-  Products.create({
-    productImage: image,
+  const imageName = req.body.imageName;
+  Profile.create({
+    imageProduct: image,
+    imageName: imageName,
   })
     .then((result) => {
       res.status(201).json({ message: "Success", sql: result });
@@ -71,23 +69,17 @@ app.post("/upload", upload.single("image"), (req, res) => {
     });
 });
 
-// app.get("/", (req, res) => {
-//   const sql = "select * Products";
-//   db.query(sql, (err, result) => {
-//     if (err) return res.json("Error");
-//     return res.json(result);
-//   });
-// });
-app.get("/", async (req, res) => {
+app.get("/images", async (req, res) => {
   try {
-    const products = await Products.findAll();
-    res.json(products);
+    const image = await Profile.findAll();
+    console.log("Image data:", image);
+    res.json(image);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
+//End Upload Image
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 const port = process.env.PORT || 8000;

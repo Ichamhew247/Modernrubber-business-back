@@ -24,7 +24,6 @@ const contactSchema = Joi.object({
   email: Joi.string().required(),
 });
 
-// exports.validateRegister = (input) => registerSchema.validate(input);
 exports.validateRegister = validate(registerSchema);
 exports.validateLogin = validate(loginSchema);
 exports.validateContact = validate(contactSchema);

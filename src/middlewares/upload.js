@@ -1,6 +1,5 @@
 const multer = require("multer");
 
-//memStorage กิน source มาก
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log(file);
