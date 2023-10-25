@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  back:
+    specifier: 'link:'
+    version: 'link:'
   bcryptjs:
     specifier: ^2.4.3
     version: 2.4.3
