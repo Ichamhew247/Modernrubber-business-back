@@ -1,14 +1,14 @@
-const Joi = require("joi");
+// const Joi = require("joi");
 
-const validate = require("./validate");
+// const validate = require("./validate");
 
-const productSchema = Joi.object({
-  nameProduct: Joi.string().required(),
-  nameProductEtc: Joi.string().required(),
-  price: Joi.string().required(),
-  type: Joi.string().required(),
-  description: Joi.string().required(),
-  image: Joi.string().required(),
-});
+// const productSchema = Joi.object({
+//   customerCode: Joi.string().required(),
+//   companyName: Joi.string().required(),
+//   address: Joi.string().required(),
+//   email: Joi.string().required(),
+//   contactNumber: Joi.string().required(),
+//   note: Joi.string().required(),
+// });
 
-exports.validateProductSchema = validate(productSchema);
+// exports.validateProductSchema = validate(productSchema);

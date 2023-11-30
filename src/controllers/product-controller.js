@@ -1,11 +1,13 @@
-const { Products } = require("../models");
+const { CompanyLists } = require("../models");
 const dotenv = require("dotenv");
+const path = require("path");
+const { Op } = require("sequelize");
 dotenv.config({ path: "./config.env" });
 
 exports.getProduct = async (req, res, next) => {
   try {
-    const products = await Products.findAll();
-    res.json(products);
+    const companyLists = await CompanyLists.findAll();
+    res.json(companyLists);
   } catch (error) {
     next(error);
   }
@@ -13,31 +15,36 @@ exports.getProduct = async (req, res, next) => {
 
 exports.searchProduct = (req, res, next) => {
   const searchKeyword = req.query.keyword;
-  Products.findAll({
+  CompanyLists.findAll({
     where: {
       [Op.or]: [
+        // {
+        //   customerCode: {
+        //     [Op.like]: `%${searchKeyword}%`,
+        //   },
+        // },
         {
-          nameProduct: {
+          companyName: {
             [Op.like]: `%${searchKeyword}%`,
           },
         },
         {
-          nameProductEtc: {
+          address: {
             [Op.like]: `%${searchKeyword}%`,
           },
         },
         {
-          description: {
+          email: {
             [Op.like]: `%${searchKeyword}%`,
           },
         },
         {
-          type: {
+          contactNumber: {
             [Op.like]: `%${searchKeyword}%`,
           },
         },
         {
-          price: {
+          note: {
             [Op.like]: `%${searchKeyword}%`,
           },
         },
@@ -52,16 +59,18 @@ exports.searchProduct = (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
   try {
-    const { nameProduct, nameProductEtc, price, type, description, image } =
-      req.body;
+    const { companyName, address, email, contactNumber, note } = req.body;
+    console.log("Request Body:", req.body);
 
-    const result = await Products.create({
-      nameProduct: nameProduct,
-      nameProductEtc: nameProductEtc,
-      description: description,
-      type: type,
-      price: price,
+    const result = await CompanyLists.create({
+      // customerCode,
+      companyName,
+      address,
+      email,
+      contactNumber,
+      note,
     });
+
     res.status(201).json({ message: "อัพโหลดสินค้าสำเร็จ", result });
   } catch (error) {
     next(error);
@@ -72,7 +81,7 @@ exports.deleteProduct = async (req, res, next) => {
   try {
     let { id } = req.params;
 
-    const result = await Products.destroy({
+    const result = await CompanyLists.destroy({
       where: { id: id },
     });
 
@@ -86,7 +95,7 @@ exports.editProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const result = await Products.update(
+    const result = await CompanyLists.update(
       { ...req.body },
       { where: { id: id } }
     );

@@ -1,20 +1,23 @@
 require("dotenv").config();
 const express = require("express");
+const session = require("express-session");
+const { checkAdmin } = require("./middlewares/checkAdmin");
 const cors = require("cors");
 const morgan = require("morgan");
-const multer = require("multer");
 const path = require("node:path");
 const { Profile } = require("../src/models");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const fs = require("fs");
+const multer = require("multer");
 
 const authRoute = require("./routes/auth-route");
 const productRoute = require("./routes/product-route");
 
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error");
+const bodyParser = require("body-parser");
 const app = express();
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images");
@@ -26,14 +29,21 @@ const storage = multer.diskStorage({
     );
   },
 });
-const upload = multer({
-  storage: storage,
-});
+
+const upload = multer({ storage: storage });
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-
+app.use(
+  session({
+    secret: process.env.YOUR_SECRETKEY,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 app.use(helmet());
 app.use(
   rateLimit({
@@ -50,12 +60,14 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 app.use("/auth", authRoute);
-app.use("/products", productRoute);
+app.use("/products", checkAdmin, productRoute);
+// app.use("/products", productRoute);
 
 //Start Upload Image
 app.post("/upload", upload.single("image"), (req, res) => {
   const image = req.file.filename;
   const imageName = req.body.imageName;
+
   Profile.create({
     imageProduct: image,
     imageName: imageName,
@@ -79,6 +91,50 @@ app.get("/images", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+app.delete("/deleteImage/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const imageToDelete = await Profile.findOne({ where: { id: id } });
+
+    if (!imageToDelete) {
+      return res.status(404).json({ message: "Image not found" });
+    }
+
+    // ลบไฟล์ภาพ
+    const imagePath = `public/images/${imageToDelete.imageProduct}`;
+
+    fs.unlink(imagePath, async (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Error deleting image file" });
+      }
+
+      // ลบข้อมูลจากฐานข้อมูล
+      await Profile.destroy({ where: { id: id } });
+
+      res.json({ message: "Image and data deleted successfully" });
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.patch("/editImages/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const result = await Profile.update(
+      { imageName: req.body.imageName },
+      { where: { id: id } }
+    );
+    res.json({ message: "Update succeeded" });
+  } catch (error) {
+    next(error);
+  }
+});
+
 //End Upload Image
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

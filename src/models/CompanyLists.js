@@ -1,23 +1,20 @@
 module.exports = (sequelize, DataTypes) => {
-  const Products = sequelize.define(
-    "Products",
+  const CompanyLists = sequelize.define(
+    "CompanyLists",
     {
-      nameProduct: {
+      companyName: {
         type: DataTypes.STRING,
       },
-      nameProductEtc: {
+      address: {
         type: DataTypes.STRING,
       },
-      description: {
+      email: {
         type: DataTypes.STRING,
       },
-      type: {
+      contactNumber: {
         type: DataTypes.STRING,
       },
-      price: {
-        type: DataTypes.STRING,
-      },
-      productImage: {
+      note: {
         type: DataTypes.STRING,
       },
     },
@@ -26,5 +23,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return Products;
+  return CompanyLists;
 };
