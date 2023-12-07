@@ -20,6 +20,7 @@ const loginSchema = Joi.object({
   userName: Joi.string().required(),
   password: Joi.string().required(),
 });
+
 const contactSchema = Joi.object({
   email: Joi.string().required(),
 });

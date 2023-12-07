@@ -5,7 +5,9 @@ const { checkAdmin } = require("./middlewares/checkAdmin");
 const cors = require("cors");
 const morgan = require("morgan");
 const path = require("node:path");
-const { Profile } = require("../src/models");
+const db = require("./models");
+const Profile = db.profiles;
+// const Users = db.products;
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const fs = require("fs");
@@ -31,12 +33,14 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
+// if (process.env.NODE_ENV === "development") {
+//   app.use(morgan("dev"));
+// }
+app.use(morgan("dev"));
 app.use(
   session({
     secret: process.env.YOUR_SECRETKEY,
@@ -44,7 +48,6 @@ app.use(
     saveUninitialized: true,
   })
 );
-app.use(helmet());
 app.use(
   rateLimit({
     windowMs: 1000 * 60 * 15,
@@ -52,16 +55,16 @@ app.use(
     message: { message: "too many requests" },
   })
 );
-app.use(express.json());
+app.use(helmet());
 app.use(cors());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(express.static("public"));
+app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 app.use("/auth", authRoute);
-app.use("/products", checkAdmin, productRoute);
-// app.use("/products", productRoute);
+app.use("/products", productRoute);
 
 //Start Upload Image
 app.post("/upload", upload.single("image"), (req, res) => {
@@ -138,7 +141,7 @@ app.patch("/editImages/:id", async (req, res, next) => {
 //End Upload Image
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
-const port = process.env.PORT || 8000;
+const port = 9999;
 app.listen(port || 8000, () => {
   console.log("server running on port " + port);
 });

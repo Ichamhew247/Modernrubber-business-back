@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const CompanyLists = sequelize.define(
-    "CompanyLists",
+  const Companylist = sequelize.define(
+    "companylist",
     {
       companyName: {
         type: DataTypes.STRING,
@@ -23,5 +23,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return CompanyLists;
+  return Companylist;
 };

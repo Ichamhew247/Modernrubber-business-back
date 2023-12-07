@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Contact = sequelize.define(
-    "Contact",
+    "contact",
     {
       email: {
         type: DataTypes.STRING,

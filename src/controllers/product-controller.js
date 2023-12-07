@@ -1,13 +1,16 @@
-const { CompanyLists } = require("../models");
-const dotenv = require("dotenv");
+// const { CompanyLists } = require("../models");
+// const dotenv = require("dotenv");
 const path = require("path");
 const { Op } = require("sequelize");
-dotenv.config({ path: "./config.env" });
+// dotenv.config({ path: "./config.env" });
+
+const db = require("../models");
+const Companylist = db.companylists;
 
 exports.getProduct = async (req, res, next) => {
   try {
-    const companyLists = await CompanyLists.findAll();
-    res.json(companyLists);
+    const companylists = await Companylist.findAll();
+    res.json(companylists);
   } catch (error) {
     next(error);
   }
@@ -15,7 +18,7 @@ exports.getProduct = async (req, res, next) => {
 
 exports.searchProduct = (req, res, next) => {
   const searchKeyword = req.query.keyword;
-  CompanyLists.findAll({
+  Companylist.findAll({
     where: {
       [Op.or]: [
         // {
@@ -62,8 +65,7 @@ exports.createProduct = async (req, res, next) => {
     const { companyName, address, email, contactNumber, note } = req.body;
     console.log("Request Body:", req.body);
 
-    const result = await CompanyLists.create({
-      // customerCode,
+    const result = await Companylist.create({
       companyName,
       address,
       email,
@@ -81,7 +83,7 @@ exports.deleteProduct = async (req, res, next) => {
   try {
     let { id } = req.params;
 
-    const result = await CompanyLists.destroy({
+    const result = await Companylist.destroy({
       where: { id: id },
     });
 
@@ -95,7 +97,7 @@ exports.editProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const result = await CompanyLists.update(
+    const result = await Companylist.update(
       { ...req.body },
       { where: { id: id } }
     );

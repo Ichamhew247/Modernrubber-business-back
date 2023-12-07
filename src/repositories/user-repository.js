@@ -1,8 +1,10 @@
-const { Users } = require("../models");
+// const { Users } = require("../models");
 const { Contact } = require("../models");
+const db = require("../models");
+const User = db.user;
 
 exports.getUsername = (userName) =>
-  Users.findOne({
+  User.findOne({
     where: {
       userName: userName,
     },
@@ -14,5 +16,5 @@ exports.saveContact = (email) => {
   });
 };
 
-exports.createUser = (user) => Users.create(user);
+exports.createUser = (user) => User.create(user);
 exports.saveContact = (email) => Contact.create({ email });

@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Users = sequelize.define(
-    "Users",
+  const User = sequelize.define(
+    "user",
     {
       fullName: {
         type: DataTypes.STRING,
@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       role: {
         type: DataTypes.STRING,
+        allowNull: true,
         defaultValue: "user",
       },
     },
@@ -32,5 +33,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return Users;
+  return User;
 };
