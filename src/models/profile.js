@@ -2,10 +2,19 @@ module.exports = (sequelize, DataTypes) => {
   const Profile = sequelize.define(
     "profile",
     {
-      imageProduct: {
+      imageName: {
         type: DataTypes.STRING,
       },
-      imageName: {
+      imagePrice: {
+        type: DataTypes.STRING,
+      },
+      imageDetail: {
+        type: DataTypes.STRING,
+      },
+      imageCategory: {
+        type: DataTypes.STRING,
+      },
+      imageProduct: {
         type: DataTypes.STRING,
       },
     },

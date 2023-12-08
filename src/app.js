@@ -7,7 +7,6 @@ const morgan = require("morgan");
 const path = require("node:path");
 const db = require("./models");
 const Profile = db.profiles;
-// const Users = db.products;
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const fs = require("fs");
@@ -62,18 +61,24 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
-
 app.use("/auth", authRoute);
-app.use("/products", productRoute);
+// app.use("/products", productRoute);
+app.use("/products", checkAdmin, productRoute);
 
 //Start Upload Image
 app.post("/upload", upload.single("image"), (req, res) => {
   const image = req.file.filename;
   const imageName = req.body.imageName;
+  const imagePrice = req.body.imagePrice;
+  const imageDetail = req.body.imageDetail;
+  const imageCategory = req.body.imageCategory;
 
   Profile.create({
     imageProduct: image,
     imageName: imageName,
+    imagePrice: imagePrice,
+    imageDetail: imageDetail,
+    imageCategory: imageCategory,
   })
     .then((result) => {
       res.status(201).json({ message: "Success", sql: result });
@@ -129,7 +134,12 @@ app.patch("/editImages/:id", async (req, res, next) => {
     const { id } = req.params;
 
     const result = await Profile.update(
-      { imageName: req.body.imageName },
+      {
+        imageName: req.body.imageName,
+        imagePrice: req.body.imagePrice,
+        imageDetail: req.body.imageDetail,
+        imageCategory: req.body.imageCategory,
+      },
       { where: { id: id } }
     );
     res.json({ message: "Update succeeded" });

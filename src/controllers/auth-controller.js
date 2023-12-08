@@ -28,12 +28,6 @@ exports.login = async (req, res, next) => {
     const value = validateLogin(req.body);
     const user = await userService.getUsername(value.userName);
 
-    // Check if the user exists
-    // if (!user) {
-    //   createError("Invalid credentials", 400)(req, res);
-    //   return;
-    // }
-
     const isCorrect = await bcryptService.compare(
       value.password,
       user.password
