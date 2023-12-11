@@ -36,9 +36,10 @@ const upload = multer({ storage: storage });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// if (process.env.NODE_ENV === "development") {
-//   app.use(morgan("dev"));
-// }
+if (process.env.NODE_ENV === "development") {
+  console.log("Running in development mode");
+}
+
 app.use(morgan("dev"));
 app.use(
   session({
