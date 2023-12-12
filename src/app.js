@@ -155,7 +155,7 @@ app.patch("/editImages/:id", async (req, res, next) => {
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
-const port = 9999;
+const port = process.env.PORT;
 var options = {
   key: fs.readFileSync("src/ssl/private.key"),
   cert: fs.readFileSync("src/ssl/certificate.crt"),
