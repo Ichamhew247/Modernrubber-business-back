@@ -161,13 +161,13 @@ var options = {
   cert: fs.readFileSync("src/ssl/certificate.crt"),
   ca: fs.readFileSync("src/ssl/ca-cert.crt"),
 };
-https
-  .createServer(options, function (req, res) {
-    res.writeHead(200);
-    res.end("Hello World Mew no");
-  })
-  .listen(port);
+// https
+//   .createServer(options, function (req, res) {
+//     res.writeHead(200);
+//     res.end("Hello World Mew no");
+//   })
+//   .listen(port);
 
-// app.listen(port || 8000, () => {
-//   console.log("server running on port " + port);
-// });
+app.listen(port || 8000, () => {
+  console.log("server running on port " + port);
+});

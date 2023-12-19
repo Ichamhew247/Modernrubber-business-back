@@ -1,7 +1,6 @@
-// const { Users } = require("../models");
-const { Contact } = require("../models");
 const db = require("../models");
 const User = db.user;
+const Contact = db.contacts;
 
 exports.getUsername = (userName) =>
   User.findOne({
@@ -17,4 +16,3 @@ exports.saveContact = (email) => {
 };
 
 exports.createUser = (user) => User.create(user);
-exports.saveContact = (email) => Contact.create({ email });

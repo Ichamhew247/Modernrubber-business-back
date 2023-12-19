@@ -5,6 +5,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
+  // dialect: dbConfig.DIALECT,
   operatorsAliases: 0,
 
   pool: {
@@ -27,7 +28,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.companylists = require("./CompanyLists.js")(sequelize, DataTypes);
+db.companylists = require("./companyLists.js")(sequelize, DataTypes);
 db.contacts = require("./contact.js")(sequelize, DataTypes);
 db.profiles = require("./profile.js")(sequelize, DataTypes);
 db.user = require("./users.js")(sequelize, DataTypes);

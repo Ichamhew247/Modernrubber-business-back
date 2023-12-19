@@ -70,10 +70,12 @@ exports.contact = async (req, res, next) => {
   try {
     const value = validateContact(req.body);
     const MeEmail = await userService.saveContact(value.email);
+
     if (!MeEmail) {
-      createError("Invalid credentials", 400)(req, res);
-      return;
+      throw new Error("Invalid credentials");
     }
+
+    res.status(201).json({ message: "send email completed", result: MeEmail });
   } catch (err) {
     next(err);
   }

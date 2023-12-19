@@ -47,6 +47,9 @@ dependencies:
   jsonwebtoken:
     specifier: ^9.0.1
     version: 9.0.1
+  mariadb:
+    specifier: ^3.2.2
+    version: 3.2.2
   multer:
     specifier: 1.4.5-lts.1
     version: 1.4.5-lts.1
@@ -61,7 +64,7 @@ dependencies:
     version: 0.12.7
   sequelize:
     specifier: ^6.32.1
-    version: 6.32.1(mysql2@3.6.0)(sqlite3@5.1.6)
+    version: 6.32.1(mariadb@3.2.2)(mysql2@3.6.0)(sqlite3@5.1.6)
   sqlite3:
     specifier: ^5.1.6
     version: 5.1.6
@@ -157,8 +160,16 @@ packages:
       '@types/ms': 0.7.31
     dev: false
 
+  /@types/geojson@7946.0.13:
+    resolution: {integrity: sha512-bmrNrgKMOhM3WsafmbGmC+6dsF2Z308vLFsQ3a/bT8X8Sv5clVYpPars/UPq+sAaJP+5OoLAYgwbkS5QEJdLUQ==}
+    dev: false
+
   /@types/ms@0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
+    dev: false
+
+  /@types/node@17.0.45:
+    resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
     dev: false
 
   /@types/node@20.4.8:
@@ -1090,6 +1101,11 @@ packages:
     resolution: {integrity: sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==}
     dev: false
 
+  /lru-cache@10.1.0:
+    resolution: {integrity: sha512-/1clY/ui8CzjKFyjdvwPWJUYKiFVXG2I2cY0ssG7h4+hwk+XOIX7ZSG9Q7TW8TW3Kp3BUSqgFWBLgL4PJ+Blag==}
+    engines: {node: 14 || >=16.14}
+    dev: false
+
   /lru-cache@6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
@@ -1140,6 +1156,17 @@ packages:
       - supports-color
     dev: false
     optional: true
+
+  /mariadb@3.2.2:
+    resolution: {integrity: sha512-9ClJCFsLcK7WnPXVxuKGd7p0CBvNch3i5nwAf1HEqERj7RV60DG/0dJu4DfO33gpYQd9Cr4jq17O76/2VjSbkg==}
+    engines: {node: '>= 12'}
+    dependencies:
+      '@types/geojson': 7946.0.13
+      '@types/node': 17.0.45
+      denque: 2.1.0
+      iconv-lite: 0.6.3
+      lru-cache: 10.1.0
+    dev: false
 
   /media-typer@0.3.0:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
@@ -1696,7 +1723,7 @@ packages:
     engines: {node: '>= 10.0.0'}
     dev: false
 
-  /sequelize@6.32.1(mysql2@3.6.0)(sqlite3@5.1.6):
+  /sequelize@6.32.1(mariadb@3.2.2)(mysql2@3.6.0)(sqlite3@5.1.6):
     resolution: {integrity: sha512-3Iv0jruv57Y0YvcxQW7BE56O7DC1BojcfIrqh6my+IQwde+9u/YnuYHzK+8kmZLhLvaziRT1eWu38nh9yVwn/g==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -1735,6 +1762,7 @@ packages:
       dottie: 2.0.6
       inflection: 1.13.4
       lodash: 4.17.21
+      mariadb: 3.2.2
       moment: 2.29.4
       moment-timezone: 0.5.43
       mysql2: 3.6.0
